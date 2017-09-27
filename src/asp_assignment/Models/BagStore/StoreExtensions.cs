@@ -11,9 +11,9 @@ namespace asp_assignment.Models.BagStore
                 if (!context.Products.Any())
                 {
                     var bag = context.Categories.Add(new Category { DisplayName = "Bag" }).Entity;
-                    var mensBag = context.Categories.Add(new Category { DisplayName = "Mens Clothing", ParentCategory = bag }).Entity;
-                    var womensBag = context.Categories.Add(new Category { DisplayName = "Womens Shirts", ParentCategory = bag }).Entity;
-                    var kidsBag = context.Categories.Add(new Category { DisplayName = "Kids Shirts", ParentCategory = bag }).Entity;
+                    var mensBag = context.Categories.Add(new Category { DisplayName = "Mens Bag", ParentCategory = bag }).Entity;
+                    var womensBag = context.Categories.Add(new Category { DisplayName = "Womens Bag", ParentCategory = bag }).Entity;
+                    var kidsBag = context.Categories.Add(new Category { DisplayName = "Kids Bag", ParentCategory = bag }).Entity;
 
                     var wholesaleSupplier = context.Suppliers.Add(new Supplier { Name = "Wholesale Suppliers", WorkPhone = 095550255, Email = "shresk03@myunitec.ac.nz" }).Entity;
                     var qualitySupplier = context.Suppliers.Add(new Supplier { Name = "Quality Suppliers", WorkPhone = 095120255, Email = "shresk03@myunitec.ac.nz" }).Entity;
@@ -37,8 +37,8 @@ namespace asp_assignment.Models.BagStore
                     //var mensBag = context.Categories.Single(c => c.DisplayName == "Men Bag");
 
                     context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner1.jpg", TagLine = "Welcome to Quality Bag Store", Details = "Best online store", Url = "http://dochyper.unitec.ac.nz/shresk03/asp_assignment" });
-                    context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner2.jpg", TagLine = "Women Bags", Details = "shresk03", Url = "http://dochyper.unitec.ac.nz/shresk03/asp_assignment" });
-                    context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner3.jpg", TagLine = "Get the best bargain", Details = "Available in the Quality bag store", Url = "http://dochyper.unitec.ac.nz/shresk03/asp_assignment/" });
+                    context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner2.jpg", TagLine = "Women Bags", Details = "shresk03", Url = "/shop/" });
+                    context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner3.jpg", TagLine = "Get the best bargain", Details = "Available in the Quality bag store", Url = "/shop/" });
                     context.SaveChanges();
                 }
             }

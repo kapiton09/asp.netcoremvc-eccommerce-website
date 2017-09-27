@@ -1,0 +1,70 @@
+@model asp_assignment.Models.BagStore.WebsiteAd
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>WebsiteAd</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Details" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="End" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Start" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TagLine" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TagLine" class="form-control" />
+                <span asp-validation-for="TagLine" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Url" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

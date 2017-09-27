@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace asp_assignment.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ManageProductController : Controller
     {
         private readonly StoreContext _context;

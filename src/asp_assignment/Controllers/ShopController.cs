@@ -19,14 +19,10 @@ namespace asp_assignment.Controllers
 
         public IActionResult Index()
         {
-            // TODO ToList() is a workaround for:
-            //        - https://github.com/aspnet/EntityFramework/issues/1851
-            //        - https://github.com/aspnet/EntityFramework/issues/1852
-
             var products = db.Products
                 .ToList()
                 .OrderByDescending(p => p.MSRP - p.CurrentPrice)
-                .Take(4);
+                .Take(12);
 
             return View(new IndexViewModel
             {

@@ -25,16 +25,27 @@ namespace asp_assignment.Controllers
                 .Where(a => a.Start == null || a.Start <= DateTime.Now.ToUniversalTime())
                 .Where(a => a.End == null || a.End >= DateTime.Now.ToUniversalTime());
 
+            var products = db.Products
+                .ToList()
+                .OrderByDescending(p => p.MSRP - p.CurrentPrice)
+                .Take(8);
+
             return View(new IndexViewModel
             {
                 TopLevelCategories = categoryCache.TopLevel(),
-                CurrentAds = ads.ToList()
+                CurrentAds = ads.ToList(),
+                FeaturedProducts = products
             });
         }
 
         public IActionResult Error()
         {
             return View("~/Views/Shared/Error.cshtml");
+        }
+
+        public IActionResult Contact()
+        {
+            return View("Contact");
         }
     }
 }

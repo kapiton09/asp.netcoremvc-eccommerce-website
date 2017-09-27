@@ -8,5 +8,6 @@ namespace asp_assignment.ViewModels.Home
     {
         public IEnumerable<Category> TopLevelCategories { get; set; }
         public List<WebsiteAd> CurrentAds { get; set; }
+        public IEnumerable<Product> FeaturedProducts { get; set; }
     }
 }

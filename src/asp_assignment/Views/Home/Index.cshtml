@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <p class="lead" style="text-align: center;">
-                                    Unicorn Store is a set of applications that show Entity Framework 7 being used to access various databases engines in different .NET applications
+                                    Quality Bag Online Store is locally owned and operated!
                                 </p>
                             </div>
                         </div>
@@ -59,23 +59,22 @@
                     <td>
                         <div class="row">
                             <div class="col-md-7">
-                                <h2>Unicorn Store</h2>
+                                <h2>Quality Bag Store</h2>
                                 <p class="lead">
-                                    The companies primary e-commerce site... selling all things unicorn and hosted at <a href="http://unicornstore.net">unicornstore.net</a>
+                                    Best online store for bags of all kinds! <a href="http://dochyper.unitec.ac.nz/shresk03/asp_assignment/">Qualitybag.co.nz</a>
                                 </p>
                                 <p>
                                     <ul>
-                                        <li>ASP.NET 5</li>
-                                        <li>Entity Framework 7</li>
-                                        <li>Microsoft SQL Server</li>
+                                        <li>Designer Bags</li>
+                                        <li>Women Bag 7</li>
+                                        <li>Men Bags</li>
+                                        <li>Kids Bags</li>
                                     </ul>
-                                    <a class="btn btn-success" href="https://github.com/rowanmiller/UnicornStore/tree/master/UnicornStore">View the Code</a>
-                                    <a class="btn btn-info" href="http://unicornstore.net/shop" >Browse the Store</a>
+                                    <a class="btn btn-info" href="/shop/">Browse the Store</a>
                                 </p>
                             </div>
                             <div class="col-md-5">
-                                <img src="~/images/applications/UnicornStore.png" />
-
+                                <img src="~/images/brand/QualityBagStore.png" />
                             </div>
                         </div>
                     </td>
@@ -83,24 +82,10 @@
                 <tr>
                     <td>
                         <div class="row">
-                            <div class="col-md-7">
-                                <h2>Unicorn Packer</h2>
-                                <p class="lead">
-                                    The warehouse application used by Unicorn Store workers to pack and ship orders placed thru the website
+                            <div class="col-md-8 col-md-offset-2">
+                                <p class="lead" style="text-align: center; font-size:20px">
+                                    Grab the latest deals before it goes off!
                                 </p>
-                                <p>
-                                    <ul>
-                                        <li>Universal Windows Platform (UWP)</li>
-                                        <li>Entity Framework 7</li>
-                                        <li>SQLite</li>
-                                        <li>ASP.NET WebAPI</li>
-                                    </ul>
-                                    <a class="btn btn-success" href="https://github.com/rowanmiller/UnicornStore/tree/master/UnicornPacker">View the Code</a>
-                                </p>
-                            </div>
-                            <div class="col-md-5">
-                                <img src="~/images/applications/UnicornPacker.png" />
-
                             </div>
                         </div>
                     </td>
@@ -108,48 +93,16 @@
                 <tr>
                     <td>
                         <div class="row">
-                            <div class="col-md-7">
-                                <h2>Unicorn Clicker</h2>
-                                <p class="lead">
-                                    A mindless game implemented in UWP and <a href="https://www.microsoft.com/en-us/store/apps/unicorn-clicker/9nblggh5jzrk">available in the app store</a> for your Windows 10 device
-                                </p>
-                                <p>
-                                    <ul>
-                                        <li>Universal Windows Platform (UWP)</li>
-                                        <li>Entity Framework 7</li>
-                                        <li>SQLite</li>
-                                    </ul>
-                                    <a class="btn btn-success" href="https://github.com/rowanmiller/UnicornStore/tree/master/UnicornClicker/UWP">View the Code</a>
-                                    <a class="btn btn-info" href="https://www.microsoft.com/en-us/store/apps/unicorn-clicker/9nblggh5jzrk">Get the App</a>
-                                </p>
-                            </div>
-                            <div class="col-md-5">
-                                <img src="~/images/applications/UnicornClicker.png" />
-
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-7">
-                                <h2>Unicorn Designer</h2>
-                                <p class="lead">
-                                    An OSX work order management application for the graphic designers at Unicorn Store
-                                </p>
-                                <p>
-                                    <ul>
-                                        <li>MonoDevelop</li>
-                                        <li>Entity Framework 7</li>
-                                        <li>PostgreSQL (Npgsql provider)</li>
-                                    </ul>
-                                    <a class="btn btn-success" href="https://github.com/rowanmiller/UnicornStore/tree/master/UnicornDesigner">View the Code</a>
-                                </p>
-                            </div>
-                            <div class="col-md-5">
-                                <img src="~/images/applications/UnicornDesigner.png" />
-
+                            <div class="col-md-12">
+                                <h2>Hot Deals</h2>
+                                <div class="row">
+                                    @foreach (var item in Model.FeaturedProducts)
+                                    {
+                                        <div class="col-md-3">
+                                            @Html.Partial("_productCard", item)
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </td>
