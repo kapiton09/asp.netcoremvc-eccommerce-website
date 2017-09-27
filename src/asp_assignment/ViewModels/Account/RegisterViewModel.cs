@@ -23,5 +23,15 @@ namespace asp_assignment.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        public int HomePhone { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        public int WorkPhone { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        public int MobilePhone { get; set; }
     }
 }

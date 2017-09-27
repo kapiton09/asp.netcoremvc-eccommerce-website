@@ -6,7 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using asp_assignment.Models.BagStore;
 using asp_assignment.ViewModels.ManageProducts;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net.Http.Headers;
+using System;
 
 namespace asp_assignment.Controllers
 {
@@ -14,12 +19,14 @@ namespace asp_assignment.Controllers
     public class ManageProductController : Controller
     {
         private readonly StoreContext _context;
+        private readonly IHostingEnvironment _hostingEnv;
         CategoryCache categoryCache;
 
-        public ManageProductController(StoreContext context, CategoryCache cache)
+        public ManageProductController(StoreContext context, CategoryCache cache, IHostingEnvironment hEnv)
         {
             _context = context;
-            categoryCache = cache;    
+            categoryCache = cache;
+            _hostingEnv = hEnv;
         }
 
         // GET: ManageProduct
@@ -60,16 +67,51 @@ namespace asp_assignment.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,SKU,SupplierId")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,SKU,SupplierId")] Product product, IList<IFormFile> _files)
         {
-            if (ModelState.IsValid)
+            var relativeName = "";
+            var fileName = "";
+
+            if (_files.Count < 1)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                relativeName = "/images/products/default.jpg";
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Email", product.SupplierId);
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"');
+                    //Path for localhost
+                    relativeName ="/images/products/" +
+                        DateTime.Now.ToString("ddMMyyyy-HHmmssffffff")
+                        + fileName;
+                    using (FileStream fs =
+                        System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            product.ImageUrl = "~"+relativeName;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Email", product.SupplierId);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem persists " + "see your system adminisrator!");
+            }
             return View(product);
         }
 

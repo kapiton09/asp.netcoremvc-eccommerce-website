@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using asp_assignment.Models.Identity;
 
 namespace asp_assignment.Models.Identity
 {
@@ -19,5 +20,7 @@ namespace asp_assignment.Models.Identity
             builder.Entity<UserAddress>().ToTable("AspNetUserAddresses");
             builder.Entity<UserAddress>().ConfigureAddress();
         }
+
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

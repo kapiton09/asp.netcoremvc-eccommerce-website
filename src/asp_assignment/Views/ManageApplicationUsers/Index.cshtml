@@ -1,0 +1,69 @@
+@model IEnumerable<asp_assignment.Models.Identity.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Manage Customer Accounts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Enabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomePhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MobilePhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkPhone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Enabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomePhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobilePhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkPhone)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> | 
+                @if (item.Enabled == true)
+                {
+                    <a asp-action="EnableDisable" asp-route-id="@item.Id">Disable User</a>;
+                }
+                else
+                {
+                    <a asp-action="EnableDisable" asp-route-id="@item.Id">Enable User</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
