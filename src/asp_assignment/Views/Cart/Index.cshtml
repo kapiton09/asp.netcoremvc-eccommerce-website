@@ -23,6 +23,9 @@
             {
                 <p>
                     @Html.ActionLink("Proceed to Checkout", "Checkout", new { }, new { Class = "btn btn-default" })
+                    @Html.ActionLink("Continue Shopping", "Index", "Shop", new { }, new { Class = "btn btn-default" })
+                    @Html.ActionLink("Clear Cart", "Clear", "Cart", new { }, new { Class = "btn btn-default" })
+
                 </p>
             }
 
@@ -34,13 +37,16 @@
                     }
                     else
                     {
-                        <span style="font-size: large">Cart Total $@Model.CartItems.Sum(item => item.Quantity * item.PricePerUnit)</span>
+                        <span style="font-size: large">Cart Sub-Total:  $@Model.CartItems.Sum(item => item.Quantity * item.PricePerUnit)</span> <br /> 
+                        <span style="font-size: large">GST 15% :  $@Model.CartItems.Sum(item => item.GSTPerUnit * item.Quantity)</span>                        <br />
+                        <span style="font-size: large">Cart Grand Total with GST: $@Model.CartItems.Sum(item => item.Quantity * item.PricePerUnitGST)</span>
                         <br /><em>@Model.CartItems.Count() items</em>
 
                         @foreach (var item in Model.CartItems)
                         {
                             <hr />
                             @Html.Partial("_LineItem", item)
+                            <br />
                             @Html.ActionLink("Remove from cart", "Remove", new { productId = @item.ProductId })
                         }
                     }
@@ -51,6 +57,8 @@
             {
                 <p>
                     @Html.ActionLink("Proceed to Checkout", "Checkout", new { }, new { Class = "btn btn-default" })
+                    @Html.ActionLink("Continue Shopping", "Index", "Shop", new { }, new { Class = "btn btn-default" })
+                    @Html.ActionLink("Clear Cart", "Clear", "Cart", new { }, new { Class = "btn btn-default" })
                 </p>
             }
         </div>

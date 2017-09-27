@@ -30,10 +30,43 @@ namespace asp_assignment.Controllers
         }
 
         // GET: ManageProduct
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var storeContext = _context.Products.Include(p => p.Category).Include(p => p.Supplier);
-            return View(await storeContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var products = from p in _context.Products.Include(p => p.Category).Include(p => p.Supplier)
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.DisplayName.Contains(searchString)
+                || s.Description.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    products = products.OrderByDescending(p => p.DisplayName);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.DisplayName);
+                    break;
+            }
+
+            int pageSize = 5;
+
+            return View(await PaginatedList<Product>.CreateAsync(products.AsNoTracking(), page ?? 1, pageSize));
         }
 
         // GET: ManageProduct/Details/5
@@ -67,7 +100,7 @@ namespace asp_assignment.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,SKU,SupplierId")] Product product, IList<IFormFile> _files)
+        public async Task<IActionResult> Create([Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,InStock,SKU,SupplierId")] Product product, IList<IFormFile> _files)
         {
             var relativeName = "";
             var fileName = "";
@@ -138,35 +171,77 @@ namespace asp_assignment.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,SKU,SupplierId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,CategoryId,CurrentPrice,Description,DisplayName,ImageUrl,MSRP,InStock,SKU,SupplierId")] Product product, IList<IFormFile> _files, string default_files)
         {
-            if (id != product.ProductId)
+            var relativeName = "";
+            var fileName = "";
+
+            string default_file = default_files;
+            if (default_file.StartsWith("~"))
             {
-                return NotFound();
+                default_file = default_file.Substring(1);
             }
 
-            if (ModelState.IsValid)
+            if (_files.Count < 1)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.ProductId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                relativeName = default_file;
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Email", product.SupplierId);
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"');
+                    //Path for localhost
+                    relativeName = "/images/products/" +
+                        DateTime.Now.ToString("ddMMyyyy-HHmmssffffff")
+                        + fileName;
+                    using (FileStream fs =
+                        System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            product.ImageUrl = "~" + relativeName;
+
+            try
+            {
+                if (id != product.ProductId)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(product);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!ProductExists(product.ProductId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction("Index");
+                }
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+                ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Email", product.SupplierId);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem persists " + "see your system adminisrator!");
+            }
             return View(product);
         }
 

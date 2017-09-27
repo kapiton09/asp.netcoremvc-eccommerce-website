@@ -23,6 +23,12 @@
                     return "Being Packed";
                 case OrderState.ReadyToShip:
                     return "Ready to Ship";
+                case OrderState.Shipped:
+                    return "Shipped";
+                case OrderState.Delivered:
+                    return "Delivered";
+                case OrderState.Cancelled:
+                    return "Cancelled";
                 default:
                     return state.ToString();
             }

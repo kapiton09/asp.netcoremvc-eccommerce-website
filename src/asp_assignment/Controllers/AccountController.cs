@@ -144,7 +144,7 @@ namespace asp_assignment.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Please confirm your account by copying and pasting this link in your browser:{callbackUrl}");
+                        $"Please confirm your account by copying and pasting this link in your browser: {callbackUrl}");
                     _logger.LogInformation(3, "User created a new account with password.");
                     return View("ConfirmRegister");
 

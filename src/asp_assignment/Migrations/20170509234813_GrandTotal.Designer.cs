@@ -8,9 +8,10 @@ using asp_assignment.Models.BagStore;
 namespace asp_assignment.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20170509234813_GrandTotal")]
+    partial class GrandTotal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -145,8 +146,6 @@ namespace asp_assignment.Migrations
                         .IsRequired();
 
                     b.Property<string>("ImageUrl");
-
-                    b.Property<bool>("InStock");
 
                     b.Property<decimal>("MSRP");
 

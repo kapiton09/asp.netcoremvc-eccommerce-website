@@ -27,16 +27,24 @@
                     @if (Model.Product.CurrentPrice == Model.Product.MSRP)
                     {
                         <p>
-                            <span style="font-size: xx-large">$@Model.Product.CurrentPrice</span>
+                            <span style="font-size: xx-large">$@Model.Product.CurrentPrice</span> gst excl.
                         </p>
                     }
                     else
                     {
                         <p>
-                            <span class="text-success" style="font-size: xx-large">$@Model.Product.CurrentPrice</span><br />
+                            <span class="text-success" style="font-size: xx-large">$@Model.Product.CurrentPrice</span> gst excl.<br />
                             <span class="text-danger"><del>$@Model.Product.MSRP</del></span>
                             (save $@(Model.Product.MSRP - Model.Product.CurrentPrice))
                         </p>
+                    }
+                    @if (Model.Product.InStock == true)
+                    {
+                        <p><span class="text-success"> Item in Stock</span></p>
+                    }
+                    else
+                    {
+                        <p><span class="text-danger"> Item Not in Stock</span></p>
                     }
                     @Html.ActionLink("Add to Cart", "Add", "Cart", new { productId = Model.Product.ProductId })
                     <p>@Model.Product.Description</p>

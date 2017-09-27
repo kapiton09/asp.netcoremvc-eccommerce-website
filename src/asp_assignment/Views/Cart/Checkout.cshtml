@@ -17,7 +17,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="container">
-                        <span style="font-size: large">Order Total $@Model.Order.Total</span>
+                        <span style="font-size: large">Order Sub-Total: $@Model.Order.Total</span><br />
+                        <span style="font-size: large">Order Grand-Total with GST $@Model.Order.GrandTotal</span>
                         @foreach (var item in Model.Order.Lines)
                             {
                             <hr />

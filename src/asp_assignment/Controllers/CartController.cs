@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace asp_assignment.Controllers
 {
-    [Authorize]
+    
     public class CartController : Controller
     {
         private UserManager<ApplicationUser> userManager;
@@ -55,6 +56,11 @@ namespace asp_assignment.Controllers
             if (product == null)
             {
                 return new StatusCodeResult(404);
+            }
+
+            if (product.InStock == false)
+            {
+                return RedirectToAction("Index", new { message = IndexMessage.ItemNotInStock});
             }
 
             var item = db.CartItems
@@ -104,6 +110,21 @@ namespace asp_assignment.Controllers
             return RedirectToAction("Index", new { message = IndexMessage.ItemRemoved });
         }
 
+      
+
+        public IActionResult Clear()
+        {
+            var cartItems = db.CartItems;
+                foreach (var cartItem in cartItems)
+            {
+                db.CartItems.Remove(cartItem);
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index", new { message = IndexMessage.CartCleared});
+        }
+
+        [Authorize]
         public IActionResult Checkout()
         {
             var userId = userManager.GetUserId(User);
@@ -118,6 +139,7 @@ namespace asp_assignment.Controllers
                 CheckoutBegan = DateTime.Now.ToUniversalTime(),
                 UserId = userId,
                 Total = items.Sum(i => i.PricePerUnit * i.Quantity),
+                GrandTotal = items.Sum(i=> i.PricePerUnitGST * i.Quantity),
                 State = OrderState.CheckingOut,
                 Lines = items.Select(i => new OrderLine
                 {
@@ -150,6 +172,7 @@ namespace asp_assignment.Controllers
             });
         }
 
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Checkout(CheckoutViewModel formOrder)
@@ -206,5 +229,6 @@ namespace asp_assignment.Controllers
 
             return RedirectToAction("Details", "Orders", new { orderId = order.OrderId, showConfirmation = true });
         }
+
     }
 }

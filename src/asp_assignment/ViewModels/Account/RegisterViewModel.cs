@@ -1,4 +1,5 @@
-﻿using System;
+﻿using asp_assignment.Models.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,5 +34,7 @@ namespace asp_assignment.Models.AccountViewModels
 
         [DataType(DataType.PhoneNumber)]
         public int MobilePhone { get; set; }
+
+        public List<UserAddress> Addresses { get; set; }
     }
 }

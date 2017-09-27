@@ -4,10 +4,10 @@ namespace asp_assignment.ViewModels.ManageProducts
 {
     public class BulkPriceReductionViewModel
     {
-        [Display(Prompt = "Category")]
+        [Display(Name ="Category")]
         public int CategoryId { get; set; }
 
-        [Display(Prompt = "Percentage off MSRP")]
+        [Display(Name = "Percentage off Actual Price")]
         public int PercentageOffMSRP { get; set; }
     }
 }

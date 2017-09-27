@@ -1,4 +1,5 @@
-﻿using System;
+﻿using asp_assignment.Migrations.ApplicationDb;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +14,7 @@ namespace asp_assignment.Models.BagStore
         [Display(Name = "Order Placed")]
         public DateTime? OrderPlaced { get; set; }
         public decimal Total { get; set; }
+        public decimal GrandTotal { get; set; }
         [Display(Name = "Status")]
         public OrderState State { get; set; }
 

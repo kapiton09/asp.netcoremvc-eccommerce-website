@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using asp_assignment.Models.Identity;
 
 namespace asp_assignment.Models.BagStore
 {
@@ -16,7 +17,6 @@ namespace asp_assignment.Models.BagStore
         public DbSet<WebsiteAd> WebsiteAds { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Category>()

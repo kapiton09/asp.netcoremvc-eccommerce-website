@@ -7,9 +7,9 @@
     <div class="col-md-9">
         <h4>@Html.ActionLink(Model.Product.DisplayName, "Product", "Shop", new { id = Model.Product.ProductId })</h4>
         <p>
-            @Model.Quantity @@ $@Model.PricePerUnit
+            @Model.Quantity @@ $@Model.PricePerUnit gst excl.
             <br />
-            <span style="font-size: large;">$@(Model.Quantity * Model.PricePerUnit)</span>
+            <span style="font-size: large;">$@(Model.Quantity * Model.PricePerUnit)</span> gst excl.
         </p>
     </div>
 </div>

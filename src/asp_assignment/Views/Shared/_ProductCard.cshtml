@@ -9,7 +9,7 @@
             @if (Model.CurrentPrice == Model.MSRP)
             {
                 <p>
-                    <span style="font-size: large">$@Model.CurrentPrice</span>
+                    <span style="font-size: large">$@Model.CurrentPrice</span> gst excl.
                     <br />
                     <br />
                 </p>
@@ -17,10 +17,18 @@
             else
             {
                 <p>
-                    <span class="text-success" style="font-size: large">$@Model.CurrentPrice</span><br />
+                    <span class="text-success" style="font-size: large">$@Model.CurrentPrice</span> gst excl.<br />
                     <span class="text-danger"><del>$@Model.MSRP</del></span>
                     (save $@(Model.MSRP - Model.CurrentPrice))
                 </p>
+            }
+            @if (Model.InStock == true)
+            {
+                <p><span class="text-success"> Item in Stock</span></p>
+            }
+            else
+            {
+                <p><span class="text-danger"> Item Not in Stock</span></p>
             }
             <img src="@Url.Content(Model.ImageUrl)" width="120" />
             <p>@Html.DisplayFor(modelItem => modelItem.Description)</p>

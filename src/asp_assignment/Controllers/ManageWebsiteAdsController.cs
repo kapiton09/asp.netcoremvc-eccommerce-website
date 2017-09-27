@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using asp_assignment.Models.BagStore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace asp_assignment.Controllers
 {
@@ -14,10 +18,12 @@ namespace asp_assignment.Controllers
     public class ManageWebsiteAdsController : Controller
     {
         private readonly StoreContext _context;
+        private readonly IHostingEnvironment _hostingEnv;
 
-        public ManageWebsiteAdsController(StoreContext context)
+        public ManageWebsiteAdsController(StoreContext context , IHostingEnvironment hEnv)
         {
-            _context = context;    
+            _context = context;
+            _hostingEnv = hEnv;
         }
 
         // GET: ManageWebsiteAds
@@ -54,13 +60,48 @@ namespace asp_assignment.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WebsiteAdId,Details,End,ImageUrl,Start,TagLine,Url")] WebsiteAd websiteAd)
+        public async Task<IActionResult> Create([Bind("WebsiteAdId,Details,End,ImageUrl,Start,TagLine,Url")] WebsiteAd websiteAd, IList<IFormFile> _files)
         {
-            if (ModelState.IsValid)
+            var relativeName = "";
+            var fileName = "";
+
+            if (_files.Count < 1)
             {
-                _context.Add(websiteAd);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                relativeName = "/images/banners/default.jpg";
+            }
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"');
+                    //Path for localhost
+                    relativeName = "/images/banners/" +
+                        DateTime.Now.ToString("ddMMyyyy-HHmmssffffff")
+                        + fileName;
+                    using (FileStream fs =
+                        System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            websiteAd.ImageUrl = "~" + relativeName;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(websiteAd);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem persists " + "see your system adminisrator!");
             }
             return View(websiteAd);
         }
@@ -86,32 +127,74 @@ namespace asp_assignment.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("WebsiteAdId,Details,End,ImageUrl,Start,TagLine,Url")] WebsiteAd websiteAd)
+        public async Task<IActionResult> Edit(int id, [Bind("WebsiteAdId,Details,End,ImageUrl,Start,TagLine,Url")] WebsiteAd websiteAd, IList<IFormFile> _files, string default_files)
         {
-            if (id != websiteAd.WebsiteAdId)
+            var relativeName = "";
+            var fileName = "";
+
+            string default_file = default_files;
+            if (default_file.StartsWith("~"))
             {
-                return NotFound();
+                default_file = default_file.Substring(1);
             }
 
-            if (ModelState.IsValid)
+            if (_files.Count < 1)
             {
-                try
+                relativeName = default_file;
+            }
+            else
+            {
+                foreach (var file in _files)
                 {
-                    _context.Update(websiteAd);
-                    await _context.SaveChangesAsync();
+                    fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"');
+                    //Path for localhost
+                    relativeName = "/images/banners/" +
+                        DateTime.Now.ToString("ddMMyyyy-HHmmssffffff")
+                        + fileName;
+                    using (FileStream fs =
+                        System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+            }
+            websiteAd.ImageUrl = "~" + relativeName;
+
+            try
+            {
+                if (id != websiteAd.WebsiteAdId)
                 {
-                    if (!WebsiteAdExists(websiteAd.WebsiteAdId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
-                return RedirectToAction("Index");
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(websiteAd);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!WebsiteAdExists(websiteAd.WebsiteAdId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem persists " + "see your system adminisrator!");
             }
             return View(websiteAd);
         }

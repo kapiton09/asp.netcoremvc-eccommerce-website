@@ -7,5 +7,6 @@ namespace asp_assignment.Models.BagStore
         Product Product { get; }
         int Quantity { get; }
         decimal PricePerUnit { get; }
+        decimal PricePerUnitGST { get; }
     }
 }

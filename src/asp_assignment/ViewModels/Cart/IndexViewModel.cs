@@ -9,16 +9,15 @@ namespace asp_assignment.ViewModels.Cart
         public IEnumerable<CartItem> CartItems { get; set; }
         public IEnumerable<Category> TopLevelCategories { get; set; }
         public IndexMessage Message { get; set; }
-
-        
-
     }
 
     public enum IndexMessage
     {
         None,
+        ItemNotInStock,
         ItemAdded,
-        ItemRemoved
+        ItemRemoved,
+        CartCleared
     }
 
     public static class IndexMessageExtensions
@@ -27,10 +26,14 @@ namespace asp_assignment.ViewModels.Cart
         {
             switch (message)
             {
+                case IndexMessage.ItemNotInStock:
+                    return "Item is not in stock";
                 case IndexMessage.ItemAdded:
                     return "Item added to your cart";
                 case IndexMessage.ItemRemoved:
                     return "Item removed from your cart";
+                case IndexMessage.CartCleared:
+                    return "Cart has been cleared!";
                 default:
                     return string.Empty;
             }
