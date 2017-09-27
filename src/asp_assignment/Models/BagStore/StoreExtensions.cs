@@ -33,8 +33,8 @@ namespace asp_assignment.Models.BagStore
 
                 if (!context.WebsiteAds.Any())
                 {
-                    var womensBag = context.Categories.Single(c => c.DisplayName == "Women Bag");
-                    var mensBag = context.Categories.Single(c => c.DisplayName == "Men Bag");
+                    //var womensBag = context.Categories.Single(c => c.DisplayName == "Women Bag");
+                    //var mensBag = context.Categories.Single(c => c.DisplayName == "Men Bag");
 
                     context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner1.jpg", TagLine = "Welcome to Quality Bag Store", Details = "Best online store", Url = "http://dochyper.unitec.ac.nz/shresk03/asp_assignment" });
                     context.WebsiteAds.Add(new WebsiteAd { ImageUrl = "/images/banners/banner2.jpg", TagLine = "Women Bags", Details = "shresk03", Url = "http://dochyper.unitec.ac.nz/shresk03/asp_assignment" });

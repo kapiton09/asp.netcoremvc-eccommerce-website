@@ -1,0 +1,82 @@
+@model asp_assignment.Models.BagStore.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="DisplayName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DisplayName" class="form-control" />
+                <span asp-validation-for="DisplayName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SupplierId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CurrentPrice" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CurrentPrice" class="form-control" />
+                <span asp-validation-for="CurrentPrice" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MSRP" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MSRP" class="form-control" />
+                <span asp-validation-for="MSRP" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SKU" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SKU" class="form-control" />
+                <span asp-validation-for="SKU" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

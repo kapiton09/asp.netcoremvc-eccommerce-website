@@ -34,10 +34,12 @@
                     @if (User.IsInRole(asp_assignment.Models.Identity.Roles.Admin))
                     {
                         <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">Admin <span class="caret"></span></a>
+                            <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">Admin Menu <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li>@Html.ActionLink("Manage Products", "Index", "ManageProducts")</li>
-                                <li>@Html.ActionLink("Bulk Price Reduction", "BulkPriceReduction", "ManageProducts")</li>
+                                <li>@Html.ActionLink("Manage Products", "Index", "ManageProduct")</li>
+                                <li>@Html.ActionLink("Bulk Price Reduction", "BulkPriceReduction", "ManageProduct")</li>
+                                <li>@Html.ActionLink("Manage Categories", "Index", "ManageCategories")</li>
+                                <li>@Html.ActionLink("Manage Suppliers", "Index", "ManageSuppliers")</li>
                             </ul>
                         </li>
                     }
@@ -53,9 +55,6 @@
         </div>
     </div>
     <div class="container">
-        <div class="alert alert-danger">
-            <strong>This is just a demo application.</strong> Feel free to submit an order... just don't expect to get anything in the mail.
-        </div>
     </div>
     <div class="container body-content">
         @RenderBody()
